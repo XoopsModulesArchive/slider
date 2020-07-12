@@ -1,0 +1,64 @@
+<{include file="$adminheader"}>
+ <br />
+
+	
+<table class="outer" cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+            <tr class='even'>
+            	<td colspan="5" align="center">
+                	<h4 style="padding:0px;margin:0px"><{$smarty.const._AM_SLIDES_LIST_TITLE}> 
+            			<a href="sliders_admin.php?op=editSlider&id=<{$sliderlist[0].id}>"><{$sliderlist[0].title}></a>
+            		</h4>
+           		</td>
+            </tr>
+            <tr class='<{cycle values="odd,even"}>'>
+              <td align="center">ID</td>
+              <td><{$smarty.const._AM_SLIDER_TITLE}></td>
+              <td><{$smarty.const._AM_SLIDER_DESCRIPTION}></td>
+              <td><{$smarty.const._AM_SLIDES_IMAGE}></td>
+              <td align="center"><{$smarty.const._AM_SLIDER_ACTIONS}></td>
+            </tr>
+            <{section name=slide loop=$sliderlist[0].slides}>
+                <tr class='<{cycle values="odd,even"}>'>
+                  <td width="2%" align="center"><{$sliderlist[0].slides[slide].id}></td>
+                  <td width="20%"><{$sliderlist[0].slides[slide].title}></td>
+                  <td width="45%"><{$sliderlist[0].slides[slide].description}></td>
+                  <td width="25%" align="center"><img width="150" src='<{$xoops_url}>/modules/slider/uploads/<{$sliderlist[0].slides[slide].image}>' /></td>
+                  <td width="5%" align="center">
+                  	<a href="slides_admin.php?op=editSlide&id=<{$sliderlist[0].slides[slide].id}>" title="<{$smarty.const._AM_SLIDER_EDIT_IMG}>" name="<{$smarty.const._AM_SLIDER_EDIT_IMG}>">
+                        	<img src="<{$xoops_url}>/modules/slider/images/edit.gif" alt="<{$smarty.const._AM_SLIDER_EDIT_IMG}>" />
+                        </a>
+                    	<a href="#" onclick="delSlide(<{$sliderlist[0].slides[slide].id}>)" title="<{$smarty.const._AM_SLIDER_DEL_IMG}>">
+                    		<img src="<{$xoops_url}>/modules/slider/images/delete.gif" alt="<{$smarty.const._AM_SLIDER_DEL_IMG}>"/>
+           				</a>
+                  </td>
+                </tr>
+           	<{/section}>
+            <tr><td colspan="5" align="center"><h5 style="padding:0px;margin:0px"><{$smarty.const._AM_SLIDES_TOTAL_COUNT}> <{$totalcount}></h5></td></tr>
+         </tbody>
+    </table>
+    <form  method="post" action="slides_admin.php?op=new&sid=<{$sliderlist[0].id}>" id="submitform" name="submitform">
+   		<input type="submit" title="<{$smarty.const._ADD}>" value="<{$smarty.const._ADD}>" id="submit" name="submit" class="formButton">
+    </form>
+
+<script type="text/javascript">
+
+function delSlide(id){
+		
+		jqDialog.confirm("<{$smarty.const._AM_ARE_YOU_SURE}>",	
+		function() { 
+						$.post("slides_admin.php", { op: "delete",id:id },
+						  function(data){ // callback function for 'YES' button
+							if(data!="")
+								alert(data); // John
+							else
+							    window.location = "slides_admin.php?sid=<{$sliderlist[0].id}>";
+						  });
+																	 
+					},		
+		function() {},		// callback function for 'NO' button
+		'<{$smarty.const._YES}>','<{$smarty.const._NO}>' //hack to show specific yes/no button text
+		);
+
+}
+</script>

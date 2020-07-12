@@ -1,0 +1,37 @@
+<{$scripts}>
+<div id="sliderbody" class="contentslider">
+	<div class="cs_wrapper">
+				<div class="cs_slider">
+					
+                    <{section name=slide loop=$sliderlist[0].slides}>
+                    <div class="cs_article">
+                    	<h2> <a href="#"><{$sliderlist[0].slides[slide].title}></a> </h2>
+							<{if $sliderlist[0].slides[slide].image neq ""}>
+                            	<img id="slide-img-2" src="/modules/slider/uploads/<{$sliderlist[0].slides[slide].image}>" class="slide" alt="" />
+                             	<{$sliderlist[0].slides[slide].description}>
+                            <{else}>
+                            	<div class="cs_article_noimage" ><{$sliderlist[0].slides[slide].description}></div>
+                            <{/if}>
+                            <a href="/modules/slider/" class="readmore"><{$more}></a>
+					</div>
+                    <{/section}>
+                    
+                 <div>   
+     </div>
+</div>
+
+
+
+<script type="text/javascript">
+$(function() {
+				$('#sliderbody').ContentSlider({
+					leftBtn : '/modules/slider/images/cs_leftImg.png',
+      				rightBtn : '/modules/slider/images/cs_rightImg.png',
+					width : '700px',
+					height : '360px',
+					speed : 800,
+					easing : 'easeInOutBack',
+					textResize : false
+				});
+			});
+</script>

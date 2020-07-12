@@ -1,0 +1,89 @@
+<{include file="$adminheader"}>
+ <br />
+<{if $totalcount eq 0}>
+	<{$smarty.const._AM_SLIDER_TOTAL_COUNT}> <{$totalcount}>
+<{else}>
+	
+<table class="outer" cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+            <tr class='even'><td colspan="5" align="center"><h4 style="padding:0px;margin:0px"><{$smarty.const._AM_SLIDER_LIST_TITLE}></h4></td></tr>
+            <tr class='<{cycle values="odd,even"}>'>
+              <td align="center">A/A</td>
+              <td><{$smarty.const._AM_SLIDER_TITLE}></td>
+              <td><{$smarty.const._AM_SLIDER_DESCRIPTION}></td>
+              <td align="center"><{$smarty.const._AM_SLIDER_DATE}></td>
+              <td align="center"><{$smarty.const._AM_SLIDER_ACTIONS}></td>
+            </tr>
+            <{section name=slider loop=$sliderlist}>
+                <tr class='<{cycle values="odd,even"}>'>
+                  <td width="2%" align="center"><{$sliderlist[slider].aa}></td>
+                  <td width="20%"><{$sliderlist[slider].title}></td>
+                  <td width="50%"><{$sliderlist[slider].description}></td>
+                  <td width="10%" align="center"><{$sliderlist[slider].date}></td>
+                  <td width="18%" align="center">                    
+						<a href="slides_admin.php?sid=<{$sliderlist[slider].id}>" title="<{$smarty.const._AM_SLIDES_ADMIN}>" name="<{$smarty.const._AM_SLIDES_ADMIN}>">
+                        	<img src="<{$xoops_url}>/modules/slider/images/slides.png" alt="<{$smarty.const._AM_SLIDES_ADMIN}>" />
+                        </a>
+                        <a href="sliders_admin.php?op=editSlider&id=<{$sliderlist[slider].id}>" title="<{$smarty.const._AM_SLIDER_EDIT_IMG}>" name="<{$smarty.const._AM_SLIDER_EDIT_IMG}>">
+                        	<img src="<{$xoops_url}>/modules/slider/images/edit.gif" alt="<{$smarty.const._AM_SLIDER_EDIT_IMG}>" />
+                        </a>
+                    	<a href="#" onclick="delSlider(<{$sliderlist[slider].id}>)" title="<{$smarty.const._AM_SLIDER_DEL_IMG}>">
+                    		<img src="<{$xoops_url}>/modules/slider/images/delete.gif" alt="<{$smarty.const._AM_SLIDER_DEL_IMG}>"/>
+           				</a>
+                    
+                    <{if $sliderlist[slider].active == 1}>
+                       	 <img src="<{$xoops_url}>/modules/slider/images/active.gif"/>
+                    <{else}>
+                    	<a href="#" onclick="setActiveSlider(<{$sliderlist[slider].id}>)" title="<{$smarty.const._AM_SLIDER_SETACTIVE_IMG}>" name="<{$smarty.const._AM_SLIDER_SETACTIVE_IMG}>">
+                       	 	<img src="<{$xoops_url}>/modules/slider/images/inactive.gif" alt="<{$smarty.const._AM_SLIDER_SETACTIVE_IMG}>"/>
+                        </a>
+                    	
+                    <{/if}>
+                       
+                  </td>
+                </tr>
+           	<{/section}>
+            <tr><td colspan="5" align="center"><h5 style="padding:0px;margin:0px"><{$smarty.const._AM_SLIDER_TOTAL_COUNT}> <{$totalcount}></h5></td></tr>
+         </tbody>
+    </table>
+<{/if}>
+<script type="text/javascript">
+
+function delSlider(id){
+		
+		jqDialog.confirm("<{$smarty.const._AM_ARE_YOU_SURE}>",	
+		function() { 
+						$.post("sliders_admin.php", { op: "delete",id:id },
+						  function(data){ // callback function for 'YES' button
+							if(data!="")
+								alert(data); // John
+							else
+							    window.location = "index.php";
+						  });
+																	 
+					},		
+		function() {},		// callback function for 'NO' button
+		'<{$smarty.const._YES}>','<{$smarty.const._NO}>' //hack to show specific yes/no button text
+		);
+
+}
+
+function setActiveSlider(id){
+		
+		jqDialog.confirm("<{$smarty.const._AM_ARE_YOU_SURE}>",	
+		function() { 
+						$.post("sliders_admin.php", { op: "setactive",id:id },
+						  function(data){ // callback function for 'YES' button
+							if(data!="")
+								alert(data); // John
+							else
+							    window.location = "index.php";
+						  });
+																	 
+					},		
+		function() {},		// callback function for 'NO' button
+		'<{$smarty.const._YES}>','<{$smarty.const._NO}>' //hack to show specific yes/no button text
+		);
+
+}
+</script>
